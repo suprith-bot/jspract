@@ -5,7 +5,7 @@ const getAllTasks= async (req,res)=>{
     const tasks = await sql`SELECT * FROM tasks order by created_at;`;
     console.log(tasks)
 
-  return res.json(tasks.rows);
+  return res.json(tasks);
 }
   catch(err){
     console.log(err);
