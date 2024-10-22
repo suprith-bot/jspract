@@ -1,21 +1,32 @@
+// /routes/taskRoutes.js
 const express = require('express');
-const { getAllTasks} = require('../controllers/taskController');
+const {
+  getAllTasks,
+  createTask,
+  updateTask,
+  markTaskComplete,
+  deleteTask,
+} = require('../controllers/taskController');
+const authMiddleware = require('../middlewares/authMiddlewares');
 
 const router = express.Router();
 
-// GET all tasks
+// Apply auth middleware to all task routes
+router.use(authMiddleware.verifyToken);
+
+// GET /api/tasks
 router.get('/', getAllTasks);
 
-// // POST create a new task
-// router.post('/', createTask);
+// POST /api/tasks
+router.post('/', createTask);
 
-// // PUT update a task
-// router.put('/:id', updateTask);
+// PUT /api/tasks/:id
+router.put('/:id', updateTask);
 
-// // PUT mark task as complete
-// router.put('/:id/complete', markTaskComplete);
+// PUT /api/tasks/:id/complete
+router.put('/:id/complete', markTaskComplete);
 
-// // DELETE a task by ID
-// router.delete('/:id', deleteTask);
+// DELETE /api/tasks/:id
+router.delete('/:id', deleteTask);
 
 module.exports = router;
