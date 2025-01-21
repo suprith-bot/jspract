@@ -7,7 +7,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value.trim();
   
     try {
-      const response = await fetch('/api/users/signup', {
+      const response = await fetch('/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
@@ -17,7 +17,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
   
       if (response.ok) {
         alert('Signup successful! Please login.');
-        window.location.href = '/login.html';
+        window.location.href = '/login';
       } else {
         alert(data.error || 'Signup failed.');
       }

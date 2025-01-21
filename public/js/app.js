@@ -1,11 +1,12 @@
-// /public/js/app.js
+
+
 
 // Function to check authentication
 const checkAuth = () => {
   const token = localStorage.getItem('token');
   if (!token) {
     alert('You must be logged in to view this page.');
-    window.location.href = '/login.html';
+    window.location.href = '/login';
   }else{
     console.log("hi");
     
@@ -19,7 +20,7 @@ function test(){
 // Logout function
 const logout = () => {
   localStorage.removeItem('token');
-  window.location.href = '/login.html';
+  window.location.href = '/login';
 };
 
 // Attach logout event
@@ -31,9 +32,14 @@ const loadTasks = async () => {
   if (!token) return;
 
   try {
-    const response = await fetch('/api/tasks', {
+    const response = await fetch('/private', {
       headers: { 'Authorization': `Bearer ${token}` },
     });
+    if(response.status===429){
+      alert('Too many requests. Try again after some time.');
+     
+      return;
+    }
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -95,12 +101,12 @@ document.getElementById('task-form').addEventListener('submit', async (e) => {
   const token = localStorage.getItem('token');
   if (!token) {
     alert('You must be logged in to add tasks.');
-    window.location.href = '/login.html';
+    window.location.href = '/login';
     return;
   }
 
   try {
-    const response = await fetch('/api/tasks', {
+    const response = await fetch('/private', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -132,12 +138,12 @@ const deleteTask = async (id) => {
   const token = localStorage.getItem('token');
   if (!token) {
     alert('You must be logged in to delete tasks.');
-    window.location.href = '/login.html';
+    window.location.href = '/login';
     return;
   }
 
   try {
-    const response = await fetch(`/api/tasks/${id}`, {
+    const response = await fetch(`/private/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` },
     });
@@ -161,12 +167,12 @@ const markAsComplete = async (id) => {
   const token = localStorage.getItem('token');
   if (!token) {
     alert('You must be logged in to update tasks.');
-    window.location.href = '/login.html';
+    window.location.href = '/login';
     return;
   }
 
   try {
-    const response = await fetch(`/api/tasks/${id}/complete`, {
+    const response = await fetch(`/private/${id}/complete`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${token}` },
     });
@@ -205,12 +211,12 @@ const editTask = async (id, currentTitle, currentDescription, currentPriority) =
   const token = localStorage.getItem('token');
   if (!token) {
     alert('You must be logged in to update tasks.');
-    window.location.href = '/login.html';
+    window.location.href = '/login';
     return;
   }
 
   try {
-    const response = await fetch(`/api/tasks/${id}`, {
+    const response = await fetch(`/private/${id}`, {
       method: 'PUT',
       headers: { 
         'Content-Type': 'application/json',

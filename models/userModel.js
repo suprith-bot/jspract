@@ -20,8 +20,43 @@ const findUserById = async (id) => {
   return result[0];
 };
 
+const updateResetToken=async (userId, resetToken, resetTokenExpiry)=> {
+  const query =await sql `
+      UPDATE users 
+      SET reset_token = ${resetToken}, reset_token_expiry = ${resetTokenExpiry} 
+      WHERE id = ${userId} 
+      RETURNING *
+  `;
+
+  return query[0];
+}
+
+const findUserByResetToken=async(token)=> {
+  const query = await sql`
+      SELECT * FROM users 
+      WHERE reset_token = ${token} 
+      AND reset_token_expiry > NOW()
+  `;
+  console.log(query);
+  return query[0];
+}
+
+const updatePassword=async (userId, hashedPassword)=> {
+  const query = await sql `
+      UPDATE users 
+      SET password = ${hashedPassword}, 
+          reset_token = NULL, 
+          reset_token_expiry = NULL 
+      WHERE id = ${userId} 
+      RETURNING *
+  `;
+  
+  return query[0];
+}
+
 module.exports = {
   createUser,
   findUserByEmail,
   findUserById,
+  updateResetToken,findUserByResetToken,updatePassword
 };

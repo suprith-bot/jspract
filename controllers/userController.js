@@ -2,14 +2,44 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
+const Joi = require('joi');
+const createUserSchema = Joi.object({
+  username: Joi.string().min(2).max(50).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
+      .required()
+      .messages({
+          'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      })});
+  
+const loginUserSchema = Joi.object({
+  
+  email: Joi.string().email().required(),
+  password: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
+      .required()
+      .messages({
+          'string.pattern.base': 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      })
+});
 
 // Secret for JWT (should be stored in .env)
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
 // User signup
 const signup = async (req, res) => {
-  const { username, email, password } = req.body;
+ 
+  const { error, value }= createUserSchema.validate(req.body, { abortEarly: false });
+  
+  if (error) {
+    return res.status(400).json({error: error.details.map(detail => detail.message).join(', ')});
+   
+}
 
+  const { username, email, password }=value;
   try {
     // Check if user already exists
     const existingUser = await userModel.findUserByEmail(email);
@@ -32,7 +62,16 @@ const signup = async (req, res) => {
 
 // User login
 const login = async (req, res) => {
-  const { email, password } = req.body;
+   
+  const { error, value }= loginUserSchema.validate(req.body, { abortEarly: false });
+  
+  if (error) {
+    return res.status(400).json({error: error.details.map(detail => detail.message).join(', ')});
+   
+}
+
+  const {  email, password }=value;
+  
 
   try {
     // Find user by email

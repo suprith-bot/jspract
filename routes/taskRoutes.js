@@ -8,6 +8,7 @@ const {
   deleteTask,
 } = require('../controllers/taskController');
 const authMiddleware = require('../middlewares/authMiddlewares');
+const { privateRouteLimiter } = require('../middlewares/rateLimiter');
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ const router = express.Router();
 router.use(authMiddleware.verifyToken);
 
 // GET /api/tasks
-router.get('/', getAllTasks);
+router.get('/',privateRouteLimiter, getAllTasks);
 
 // POST /api/tasks
 router.post('/', createTask);

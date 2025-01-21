@@ -18,7 +18,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
         // Store token in localStorage
         localStorage.setItem('token', data.token);
         alert('Login successful!');
-        window.location.href = '/index.html'; // Redirect to tasks page
+        window.location.href = '/'; // Redirect to tasks page
       } else {
         alert(data.error || 'Login failed.');
       }
