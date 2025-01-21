@@ -1,0 +1,26 @@
+service: api-key-authorizer
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+
+functions:
+  authorizer:
+    handler: handler.authorizer
+    memorySize: 128
+    description: Authorizer function to validate API keys
+  hello:
+    handler: handler.hello
+    memorySize: 128
+    description: Example API endpoint
+    events:
+      - http:
+          path: hello
+          method: get
+          authorizer:
+            name: authorizer
+            type: token
+            identitySource: "method.request.header.Authorization" # Link the authorizer Lambda function
+            
+
