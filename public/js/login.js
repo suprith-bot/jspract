@@ -15,8 +15,23 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       const data = await response.json();
   
       if (response.ok) {
-        // Store token in localStorage
+        // Store access token
         localStorage.setItem('token', data.token);
+        
+        // Store refresh token if provided
+        // Satisfies A01-E01-U09 - Persist Login State Across Sessions
+        if (data.refreshToken) {
+          localStorage.setItem('refreshToken', data.refreshToken);
+        }
+        
+        // Store user profile data if available
+        if (data.avatarUrl) {
+          localStorage.setItem('avatarUrl', data.avatarUrl);
+        }
+        if (data.displayName) {
+          localStorage.setItem('displayName', data.displayName);
+        }
+        
         alert('Login successful!');
         window.location.href = '/'; // Redirect to tasks page
       } else {
@@ -27,4 +42,3 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       alert('An error occurred during login.');
     }
   });
-  

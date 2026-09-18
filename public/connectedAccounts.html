@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connected Accounts - CheckIt Task Manager</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/socialAuth.css">
+  <link rel="stylesheet" href="/css/notifications.css">
+</head>
+<body>
+  <!-- Header Navigation -->
+  <header style="background: var(--color-panel-strong-light); border-bottom: 1px solid var(--color-line-light); padding: 1rem;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+      <a href="/" style="text-decoration: none; color: var(--color-text-primary); font-size: 1.25rem; font-weight: 700;">CheckIt</a>
+      
+      <nav style="display: flex; gap: 2rem; align-items: center;">
+        <a href="/" style="text-decoration: none; color: var(--color-text-muted);">Dashboard</a>
+        <a href="/connectedAccounts.html" style="text-decoration: none; color: var(--color-accent-primary); font-weight: 600;">Settings</a>
+        
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <!-- Notification Badge -->
+          <a href="/notifications.html" class="notification-badge" style="position: relative; text-decoration: none; color: var(--color-text-primary); font-size: 24px;">
+            🔔
+            <span id="notification-badge-count" class="notification-badge-count" style="display: none;">0</span>
+          </a>
+          
+          <img id="user-avatar" src="" alt="User profile" class="user-avatar" style="display: none;">
+          <span id="user-display-name" style="color: var(--color-text-primary);"></span>
+          <button id="logout-btn" style="padding: 0.5rem 1rem; border: 1px solid var(--color-line-light); background: transparent; border-radius: 0.375rem; cursor: pointer; color: var(--color-text-primary);">Sign Out</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div style="display: flex; min-height: calc(100vh - 72px);">
+    <!-- Settings Sidebar -->
+    <aside style="width: 240px; background: var(--color-panel-light); border-right: 1px solid var(--color-line-light); padding: 2rem 1rem;">
+      <ul class="settings-nav">
+        <li><a href="/profile.html">Profile</a></li>
+        <li><a href="/connectedAccounts.html" class="active">Connected Accounts</a></li>
+        <li><a href="/security.html">Security</a></li>
+        <li><a href="/notificationPreferences.html">Notifications</a></li>
+        <li><a href="/privacy.html">Privacy</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main style="flex: 1; padding: 2rem;">
+      <div class="connected-accounts-container">
+        <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Connected Accounts</h1>
+        <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Manage your connected social accounts and authentication methods</p>
+
+        <!-- Success/Error messages will be inserted here -->
+
+        <!-- Connected Accounts Section -->
+        <section style="margin-bottom: 3rem;">
+          <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: var(--color-text-primary);">Current Connections</h2>
+          <div id="connected-accounts-list">
+            <!-- Connected accounts will be rendered here -->
+          </div>
+        </section>
+
+        <!-- Available Providers Section -->
+        <section>
+          <h2 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: var(--color-text-primary);">Available Providers</h2>
+          <p style="color: var(--color-text-muted); margin-bottom: 1rem; font-size: 0.875rem;">Link additional accounts to have more sign-in options</p>
+          <div id="available-providers-list" style="display: flex; flex-direction: column; gap: 0.75rem; max-width: 400px;">
+            <!-- Available providers will be rendered here -->
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/notificationBadge.js"></script>
+  <script src="/js/socialLogin.js"></script>
+  <script src="/js/connectedAccounts.js"></script>
+  <script>
+    // Update user profile in header
+    document.addEventListener('DOMContentLoaded', () => {
+      const profile = window.socialAuth.getUserProfile();
+      
+      if (profile.avatarUrl) {
+        const avatarEl = document.getElementById('user-avatar');
+        avatarEl.src = profile.avatarUrl;
+        avatarEl.style.display = 'block';
+      }
+      
+      if (profile.displayName) {
+        const nameEl = document.getElementById('user-display-name');
+        nameEl.textContent = profile.displayName;
+      }
+
+      // Logout functionality
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        const token = localStorage.getItem('token');
+        
+        try {
+          await fetch('/api/users/logout', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+        
+        // Clear local storage
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('avatarUrl');
+        localStorage.removeItem('displayName');
+        
+        // Redirect to login
+        window.location.href = '/login.html';
+      });
+    });
+  </script>
+</body>
+</html>

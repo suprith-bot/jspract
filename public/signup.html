@@ -6,19 +6,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Task Manager - Sign Up</title>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/socialAuth.css">
 </head>
 <body>
   <div class="container">
     <h1>Sign Up</h1>
+
+    <!-- Social Sign Up Section -->
+    <div class="social-login-container" style="margin-bottom: 2rem;">
+      <div id="social-error-message" class="social-error-message"></div>
+
+      <button class="social-login-btn google" data-provider="google" aria-label="Sign up with Google">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5.64 13.92c-.62 1.86-2.28 3.21-4.24 3.37-1.95.16-3.87-.77-4.95-2.37-.89-1.31-1.13-2.95-.67-4.48.46-1.54 1.65-2.77 3.17-3.29 1.52-.52 3.18-.27 4.43.67-.54.54-1.09 1.07-1.67 1.57-.91-.56-2.06-.7-3.01-.21-.95.5-1.6 1.47-1.67 2.53-.1 1.61.83 3.1 2.36 3.63 1.52.53 3.26-.07 4.01-1.5h-2.67v-2.04h4.68c.09.71.05 1.44-.11 2.12z"/>
+        </svg>
+        <span>Sign up with Google</span>
+      </button>
+
+      <button class="social-login-btn facebook" data-provider="facebook" aria-label="Sign up with Facebook">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127c-.82-.088-1.643-.13-2.467-.127-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z"/>
+        </svg>
+        <span>Sign up with Facebook</span>
+      </button>
+
+      <button class="social-login-btn github" data-provider="github" aria-label="Sign up with GitHub">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+        </svg>
+        <span>Sign up with GitHub</span>
+      </button>
+
+      <div style="text-align: center; margin: 1.5rem 0; position: relative;">
+        <span style="background: white; padding: 0 1rem; position: relative; z-index: 1; color: var(--color-text-muted);">OR</span>
+        <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--color-line-light);"></div>
+      </div>
+    </div>
+
+    <!-- Traditional Sign Up Form -->
     <form id="signup-form">
       <input type="text" id="username" placeholder="Username" required>
       <input type="email" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Password" required>
       <button type="submit">Sign Up</button>
     </form>
-    <p>Already have an account? <a href="/login">Login here</a>.</p>
+    <p>Already have an account? <a href="/login.html">Login here</a>.</p>
   </div>
 
+  <script src="/js/socialLogin.js"></script>
   <script src="/js/signup.js"></script>
 </body>
 </html>

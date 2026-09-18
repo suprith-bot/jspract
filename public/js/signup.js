@@ -17,7 +17,7 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
   
       if (response.ok) {
         alert('Signup successful! Please login.');
-        window.location.href = '/login';
+        window.location.href = '/login.html';
       } else {
         alert(data.error || 'Signup failed.');
       }
@@ -26,4 +26,3 @@ document.getElementById('signup-form').addEventListener('submit', async (e) => {
       alert('An error occurred during signup.');
     }
   });
-  
